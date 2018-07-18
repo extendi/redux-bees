@@ -15,7 +15,7 @@ export const get = function get(placeholders = {}, options = {}) {
 export const post = function post(...args) {
   const placeholders = args.length >= 2 ? args[0] : {};
   const body = args.length >= 2 ? args[1] : args[0];
-  const options = args.length == 3 ? args[2] : {};
+  const options = args.length === 3 ? args[2] : {};
 
   return {
     placeholders,
@@ -24,7 +24,7 @@ export const post = function post(...args) {
       mode: 'cors',
       body: body && JSON.stringify(body),
       ...options,
-    }
+    },
   };
 };
 
@@ -35,7 +35,7 @@ export const post = function post(...args) {
 export const patch = function patch(...args) {
   const placeholders = args.length >= 2 ? args[0] : {};
   const body = args.length >= 2 ? args[1] : args[0];
-  const options = args.length == 3 ? args[2] : {};
+  const options = args.length === 3 ? args[2] : {};
 
   return {
     placeholders,
@@ -44,7 +44,7 @@ export const patch = function patch(...args) {
       mode: 'cors',
       body: body && JSON.stringify(body),
       ...options,
-    }
+    },
   };
 };
 
@@ -52,10 +52,10 @@ export const patch = function patch(...args) {
 // placeholders, body
 // placeholders, body, options
 
-export const put = function patch(...args) {
+export const put = function put(...args) {
   const placeholders = args.length >= 2 ? args[0] : {};
   const body = args.length >= 2 ? args[1] : args[0];
-  const options = args.length == 3 ? args[2] : {};
+  const options = args.length === 3 ? args[2] : {};
 
   return {
     placeholders,
@@ -64,7 +64,7 @@ export const put = function patch(...args) {
       mode: 'cors',
       body: body && JSON.stringify(body),
       ...options,
-    }
+    },
   };
 };
 
@@ -81,4 +81,3 @@ export const destroy = function destroy(placeholders = {}, options = {}) {
     },
   };
 };
-

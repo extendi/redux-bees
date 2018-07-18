@@ -1,12 +1,11 @@
 import request from './request';
-import { isRequestLoading } from './selectors';
 import applyUrlWithPlaceholders from './applyUrlWithPlaceholders';
 
 const pendingPromises = {};
 
-const defaultConfigure = (options) => options;
-const defaultAfterResolve = (result) => Promise.resolve(result);
-const defaultAfterReject = (result) => Promise.reject(result);
+const defaultConfigure = options => options;
+const defaultAfterResolve = result => Promise.resolve(result);
+const defaultAfterReject = result => Promise.reject(result);
 
 export default function buildApi(endpoints, config = {}) {
   const {
@@ -21,7 +20,7 @@ export default function buildApi(endpoints, config = {}) {
     const { path, required, method: normalizeArguments } = endpoints[key];
 
     const requiredPlaceholders = required || [];
-    const placeholderRegexp = /:([^\/$]+)/g;
+    const placeholderRegexp = /:([^/$]+)/g;
     let match;
 
     while (match = placeholderRegexp.exec(path)) {
@@ -44,9 +43,9 @@ export default function buildApi(endpoints, config = {}) {
       };
 
       const missingPlaceholders = requiredPlaceholders
-        .filter(key => (
-          !placeholders.hasOwnProperty(key) ||
-            placeholders[key] == null
+        .filter(currPlaceholder => (
+          !Object.prototype.hasOwnProperty.call(placeholders, currPlaceholder)
+          || placeholders[currPlaceholder] == null
         ));
 
       if (missingPlaceholders.length > 0) {
@@ -67,7 +66,7 @@ export default function buildApi(endpoints, config = {}) {
       const req = request(
         baseUrl,
         applyUrlWithPlaceholders(path, placeholders),
-        configureOptions(augmentedOptions)
+        configureOptions(augmentedOptions),
       );
 
       const promise = req
@@ -93,4 +92,4 @@ export default function buildApi(endpoints, config = {}) {
 
     return acc;
   }, {});
-};
+}

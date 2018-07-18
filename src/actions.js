@@ -4,6 +4,6 @@ export function invalidateRequests(apiCall, params = null) {
     payload: {
       actionName: apiCall.actionName,
       params,
-    }
+    },
   };
 }

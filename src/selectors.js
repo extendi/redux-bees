@@ -38,7 +38,7 @@ export function getRelationship(state, entity, relationshipName) {
   }
 
   const { data } = entity.relationships[relationshipName];
-    
+
   if (Array.isArray(data)) {
     return data.map(handle => getEntity(state, handle));
   }
@@ -73,7 +73,7 @@ export function getRequestMeta(state, apiCall, args) {
 
 export function isRequestLoading(state, apiCall, args) {
   const request = getRawRequest(state, apiCall, args);
-  return request && request.isLoading ? true : false;
+  return !!(request && request.isLoading);
 }
 
 export function hasRequestStarted(state, apiCall, args) {

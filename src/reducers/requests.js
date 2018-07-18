@@ -18,16 +18,13 @@ export default function reducer(state = initialState, action) {
       return Object.keys(state[actionName]).reduce((acc, key) => {
         if (params(...JSON.parse(key))) {
           return invalidate(acc, actionName, key);
-        } else {
-          return acc;
         }
+        return acc;
       }, state);
-    } else if (params && state[actionName][JSON.stringify(params)]) {
+    } if (params && state[actionName][JSON.stringify(params)]) {
       return invalidate(state, actionName, JSON.stringify(params));
-    } else if (!params) {
-      return Object.keys(state[actionName]).reduce((acc, key) => {
-        return invalidate(acc, actionName, key);
-      }, state);
+    } if (!params) {
+      return Object.keys(state[actionName]).reduce((acc, key) => invalidate(acc, actionName, key), state);
     }
 
     return state;
@@ -60,8 +57,7 @@ export default function reducer(state = initialState, action) {
     );
 
     return newState;
-
-  } else if (metaType === 'response' && action.payload) {
+  } if (metaType === 'response' && action.payload) {
     let newState = state;
 
     if (action.payload.body) {
@@ -87,7 +83,7 @@ export default function reducer(state = initialState, action) {
         newState = immutable.set(
           newState,
           [name, JSON.stringify(params), 'meta'],
-          meta
+          meta,
         );
       }
     }
@@ -111,7 +107,7 @@ export default function reducer(state = initialState, action) {
     );
 
     return newState;
-  } else if (metaType === 'error') {
+  } if (metaType === 'error') {
     let newState = state;
 
     newState = immutable.set(
@@ -127,11 +123,10 @@ export default function reducer(state = initialState, action) {
     );
 
     if (action.payload instanceof Error) {
-
       newState = immutable.set(
         newState,
         [name, JSON.stringify(params), 'error'],
-        action.payload.message
+        action.payload.message,
       );
 
       newState = immutable.del(
@@ -143,13 +138,11 @@ export default function reducer(state = initialState, action) {
         newState,
         [name, JSON.stringify(params), 'status'],
       );
-
     } else {
-
       newState = immutable.set(
         newState,
         [name, JSON.stringify(params), 'error'],
-        action.payload.body
+        action.payload.body,
       );
 
       newState = immutable.set(
@@ -170,4 +163,3 @@ export default function reducer(state = initialState, action) {
 
   return state;
 }
-

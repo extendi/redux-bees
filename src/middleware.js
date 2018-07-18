@@ -1,7 +1,7 @@
 export default function buildMiddleware() {
   return () => next => (promise) => {
     if (!promise) {
-      return;
+      return null;
     }
 
     if (!promise.then) {
@@ -9,7 +9,7 @@ export default function buildMiddleware() {
     }
 
     if (promise.noop) {
-      return;
+      return null;
     }
 
     const meta = {
@@ -24,21 +24,21 @@ export default function buildMiddleware() {
     });
 
     return promise
-    .then((result) => {
-      next({
-        type: `api/${promise.actionName}/response`,
-        payload: result,
-        meta: { ...meta, type: 'response' },
+      .then((result) => {
+        next({
+          type: `api/${promise.actionName}/response`,
+          payload: result,
+          meta: { ...meta, type: 'response' },
+        });
+        return Promise.resolve(result);
+      })
+      .catch((result) => {
+        next({
+          type: `api/${promise.actionName}/error`,
+          payload: result,
+          meta: { ...meta, type: 'error' },
+        });
+        return Promise.reject(result);
       });
-      return Promise.resolve(result);
-    })
-    .catch((result) => {
-      next({
-        type: `api/${promise.actionName}/error`,
-        payload: result,
-        meta: { ...meta, type: 'error' },
-      });
-      return Promise.reject(result);
-    });
   };
 }

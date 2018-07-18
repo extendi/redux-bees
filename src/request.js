@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 /**
  * Runs the redux-bees api request.
  * The baseUrl can also be a function which is assessed at runtime.
@@ -9,11 +11,11 @@
  */
 
 export default function request(baseUrl, path, options) {
-  const url = (typeof baseUrl === 'function' ? baseUrl() : baseUrl) + path
+  const url = (typeof baseUrl === 'function' ? baseUrl() : baseUrl) + path;
   return fetch(url, options)
     .then((res) => {
       const headers = {};
-      res.headers.forEach((value, name) => headers[name] = value);
+      res.headers.forEach((value, name) => { headers[name] = value; });
 
       const response = {
         status: res.status,
@@ -33,5 +35,4 @@ export default function request(baseUrl, path, options) {
 
       return Promise.reject(response);
     });
-};
-
+}

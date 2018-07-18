@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getRequestInfo } from './selectors';
-import { invalidateRequests } from './actions';
 import omit from 'object.omit';
 import hoistNonReactStatic from 'hoist-non-react-statics';
+import { getRequestInfo } from './selectors';
 
 const defaultDispatcher = call => call();
 
 function getDisplayName(WrappedComponent) {
-  return WrappedComponent.displayName ||
-    WrappedComponent.name ||
-    'Component';
+  return WrappedComponent.displayName
+    || WrappedComponent.name
+    || 'Component';
 }
 
 export default function query(propName, apiCall, dispatcher = defaultDispatcher) {
@@ -55,7 +54,7 @@ export default function query(propName, apiCall, dispatcher = defaultDispatcher)
 
     Wrapper.displayName = `query(${getDisplayName(InnerComponent)}, ${propName})`;
 
-    Wrapper.loadData = function(dispatch, props) {
+    Wrapper.loadData = function (dispatch, props) {
       return dispatch(dispatcher(apiCall, props));
     };
 
